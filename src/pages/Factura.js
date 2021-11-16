@@ -41,10 +41,11 @@ class Factura extends Component {
   }
 
   escanear = async () => {
-    //const data = await BarcodeScanner.scan();
+    const data = await BarcodeScanner.scan();
 
-    //this.setState({ encodedText: data.text });
+    this.setState({ encodedText: data.text });
 
+    /*
     let x = Math.floor((Math.random() * 100) + 1);
     let barcode = "";
     console.log(x);
@@ -57,9 +58,10 @@ class Factura extends Component {
     } else {
       barcode = "7420073804832";
     }
+    */
 
-    //let Parameters = '?action=getJSON&get=producto_factura&barcode=' +  this.state.encodedText;
-    let Parameters = '?action=getJSON&get=producto_factura&barcode=' + barcode;
+    let Parameters = '?action=getJSON&get=producto_factura&barcode=' +  this.state.encodedText;
+    //let Parameters = '?action=getJSON&get=producto_factura&barcode=' + barcode;
 
     fetch(this.state.url + Parameters)
       .then((res) => res.json())
@@ -224,8 +226,6 @@ class Factura extends Component {
           isv += (lista_factura[x].total_pre_x_cant * 0.15);
         }
       }
-      //console.log("Total ISV: " + isv);
-      //console.log("Total + ISV: " + parseFloat(total + isv));
 
       let values = {
         cliente_id: cliente_id, fecha: fecha, total: total, isv: isv,
