@@ -77,8 +77,7 @@ class Factura extends Component {
           } else if (responseJson[0].aplica_isv == 0) {
             this.setState({ scanned: true, subtotal: responseJson[0].total_pre_x_cant, isv_factura: 0.00, lista_factura: firstItemActualizarState });
           }
-
-          //this.setState({ scanned: true, subtotal: responseJson[0].total_pre_x_cant, lista_factura: firstItemActualizarState });
+          
         } else {
           var a = JSON.parse(localStorage.getItem('lista_factura')) || [];
           var b = localStorage.getItem('lista_factura');
