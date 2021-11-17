@@ -3,23 +3,23 @@ import {
   IonItemDivider, IonList, IonInput,
   IonItem, IonLabel, IonButton, IonBackButton,
   IonToolbar, IonHeader, IonButtons, IonGrid, IonRow,
-  IonCol, IonIcon, IonFooter, IonTitle
+  IonCol, IonFooter, IonTitle
 } from '@ionic/react';
 import {
-  arrowBackOutline, barcode
+  arrowBackOutline
 } from 'ionicons/icons';
 
 import { Component } from 'react'
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
-import { prepararPost, getTodayDate } from '../utilities/utilities.js'
+import { prepararPost, getTodayDate, url } from '../utilities/utilities.js'
 //import './Factura.css';
 
 class Factura extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: 'https://pymesys.000webhostapp.com/api/pymesys.php',
+      url: url(),
       factura: false,
       hoy: getTodayDate(1),
       encodedText: '',
@@ -77,7 +77,7 @@ class Factura extends Component {
           } else if (responseJson[0].aplica_isv == 0) {
             this.setState({ scanned: true, subtotal: responseJson[0].total_pre_x_cant, isv_factura: 0.00, lista_factura: firstItemActualizarState });
           }
-          
+
         } else {
           var a = JSON.parse(localStorage.getItem('lista_factura')) || [];
           var b = localStorage.getItem('lista_factura');
@@ -98,7 +98,7 @@ class Factura extends Component {
           // Si el elemento no existe, lo metemos en la localStorage
           if (itemExiste.length == 0) {
             a.push(responseJson[0]);
-
+            
             localStorage.setItem('lista_factura', JSON.stringify(a));
 
             var b = localStorage.getItem('lista_factura');

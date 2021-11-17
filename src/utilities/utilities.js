@@ -27,7 +27,7 @@ export function prepararPost(values, set, structure = "jsonSingle") {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: formBody
     };
-
+    
     return requestOptions;
 
   } else if (structure == "jsonArray") {
@@ -82,4 +82,8 @@ export function getTodayDate(params) {
   date = d.toLocaleDateString("es-MX", options);
 
   return date;
+}
+
+export function url(){
+  return 'https://pymesys.000webhostapp.com/api/pymesys.php';
 }

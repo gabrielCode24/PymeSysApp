@@ -23,6 +23,9 @@ import { Route, Redirect } from 'react-router-dom'
 import Login from './pages/Login.js'
 import Home from './pages/Home.js'
 import Factura from './pages/Factura'
+import Inventario from './pages/Inventario';
+import MatriculaProductos from './pages/MatriculaProductos'
+import EditarInfoProductos from './pages/EditarInfoProductos'
 
 function App(props) {
 
@@ -33,6 +36,9 @@ function App(props) {
           <Route path="/login" component={Login} exact />
           <Route path="/home" component={Home} exact />
           <Route path="/factura" component={Factura} exact />
+          <Route path="/inventario" component={Inventario} exact />
+          <Route path="/matricula-productos" component={MatriculaProductos} exact />
+          <Route path="/editar-info-productos" component={EditarInfoProductos} exact />
 
           <Redirect to="/login" />
         </IonRouterOutlet>

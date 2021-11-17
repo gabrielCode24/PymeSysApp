@@ -5,14 +5,16 @@ import {
 } from '@ionic/react';
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import './Home.css';
+//import './Home.css';
 import facturar from '../assets/images/facturar.jpeg'
+import inventario from '../assets/images/inventario.jpg'
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      facturar: false,
+      inventario: false
     }
   }
 
@@ -21,6 +23,8 @@ class Home extends Component {
       case 'factura':
         this.setState({ facturar: true });
         break;
+      case 'inventario':
+        this.setState({ inventario: true })
     }
   }
 
@@ -28,6 +32,10 @@ class Home extends Component {
 
     if (this.state.facturar) {
       return (<Redirect to={'/factura'} />)
+    }
+    
+    if(this.state.inventario){
+      return (<Redirect to={'/inventario'} />)
     }
 
     return (
@@ -39,12 +47,13 @@ class Home extends Component {
               <IonRow>
                 <IonCol size="6" onClick={() => this.redirigir('factura')} style={{
                   height: "140px", borderColor: "#C0C0C0",
-                  borderWidth: "1px", borderStyle: "solid", backgroundSize:"cover"
-                }}><IonImg src={facturar} style={{ height:"100%" }}></IonImg></IonCol>
-                <IonCol size="6" style={{
+                  borderWidth: "1px", borderStyle: "solid", backgroundSize: "cover"
+                }}><IonImg src={facturar} style={{ height: "100%" }}></IonImg></IonCol>
+
+                <IonCol size="6" onClick={() => this.redirigir('inventario')} style={{
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid"
-                }}>ion-col row1</IonCol>
+                }}><IonImg src={inventario} style={{ height: "100%" }}></IonImg></IonCol>
               </IonRow>
 
               <IonRow>
@@ -52,6 +61,7 @@ class Home extends Component {
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid"
                 }}>ion-col row2</IonCol>
+
                 <IonCol size="6" style={{
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid"
