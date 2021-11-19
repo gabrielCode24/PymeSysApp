@@ -234,7 +234,7 @@ class Factura extends Component {
       //FIN ESTRUCTURA FACTURA RESUMEN
 
       //Asignamos a una variable lo que devuelva prepararPost() que contiene todo el armado de la petición
-      const requestOptions = prepararPost(values, "factura_resumen", "jsonSingle");
+      const requestOptions = prepararPost(values, "factura_resumen", "setJsons", "jsonSingle");
 
       fetch(this.state.url, requestOptions)
         .then((response) => {
@@ -294,7 +294,7 @@ class Factura extends Component {
                       }
                       console.log(JSON.stringify(values_arr));
 
-                      const requestOptionsFacturaDetalle = prepararPost(values_arr, "factura_detalle", "jsonArray");
+                      const requestOptionsFacturaDetalle = prepararPost(values_arr, "factura_detalle", "setJsons", "jsonArray");
 
                       fetch(this.state.url, requestOptionsFacturaDetalle)
                         .then((response) => {

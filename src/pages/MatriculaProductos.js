@@ -20,15 +20,12 @@ class MatriculaProductos extends Component {
       url: url(),
       aplica_isv: 1,
       sending: false,
-      max_id_producto: 0,
-      encodedText: ''
+      max_id_producto: 0
     }
   }
 
   escanear = async () => {
     const data = await BarcodeScanner.scan();
-
-    //this.setState({ encodedText: data.text });
 
     document.getElementById('barra').value = data.text;
   }
@@ -56,7 +53,7 @@ class MatriculaProductos extends Component {
         fec_ing: fec_ing, usr_ing: usr_ing
       }
 
-      const requestOptions = prepararPost(values, "productos", "jsonSingle");
+      const requestOptions = prepararPost(values, "productos", "setJsons", "jsonSingle");
 
       fetch(this.state.url, requestOptions)
         .then((response) => {
@@ -83,7 +80,7 @@ class MatriculaProductos extends Component {
                         fec_ing: fec_ing
                       }
 
-                      const requestOptionsProductoPrecio = prepararPost(valuesPrecio, "productos_precios", "jsonSingle");
+                      const requestOptionsProductoPrecio = prepararPost(valuesPrecio, "productos_precios", "setJsons", "jsonSingle");
 
                       fetch(this.state.url, requestOptionsProductoPrecio)
                         .then((response) => {
@@ -100,7 +97,6 @@ class MatriculaProductos extends Component {
                             alert("Ocurrió un error al registrar el producto.")
                           }
                         })
-
                     }, 1000)
                   }
                 })
@@ -131,7 +127,7 @@ class MatriculaProductos extends Component {
         }
       })
   }
-
+  
   render() {
 
     return (

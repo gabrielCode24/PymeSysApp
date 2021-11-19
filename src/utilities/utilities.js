@@ -1,5 +1,5 @@
 //Función genérica para preparar solicitudes POST en el formato de la app (action - set - data)
-export function prepararPost(values, set, structure = "jsonSingle") {
+export function prepararPost(values, set, action = "setJsons", structure = "jsonSingle") {
 
   if (structure == "jsonSingle") {
     let data = [];
@@ -7,7 +7,7 @@ export function prepararPost(values, set, structure = "jsonSingle") {
     //Ingresamos en un arreglo el JSON guardado en variable values
     data.push(values);
     const requestMetaData = { //Armamos los datos necesarios para hacer el request POST
-      action: "setJsons",
+      action: action,
       set: set,
       data: JSON.stringify(data)
     }
@@ -27,7 +27,7 @@ export function prepararPost(values, set, structure = "jsonSingle") {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: formBody
     };
-    
+    console.log(requestOptions);
     return requestOptions;
 
   } else if (structure == "jsonArray") {
