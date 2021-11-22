@@ -55,17 +55,17 @@ class Home extends Component {
                   borderWidth: "1px", borderStyle: "solid"
                 }}><IonImg src={inventario} style={{ height: "100%" }}></IonImg></IonCol>
               </IonRow>
-
+                
               <IonRow>
                 <IonCol size="6" style={{
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid"
-                }}>ion-col row2</IonCol>
+                }}></IonCol>
 
                 <IonCol size="6" style={{
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid"
-                }}>ion-col row2</IonCol>
+                }}></IonCol>
               </IonRow>
             </IonGrid>
           </div>
