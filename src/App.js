@@ -26,6 +26,7 @@ import Factura from './pages/Factura'
 import Inventario from './pages/Inventario';
 import MatriculaProductos from './pages/MatriculaProductos'
 import EditarInfoProductos from './pages/EditarInfoProductos'
+import ControlStock from './pages/ControlStock';
 
 function App(props) {
 
@@ -39,6 +40,7 @@ function App(props) {
           <Route path="/inventario" component={Inventario} exact />
           <Route path="/matricula-productos" component={MatriculaProductos} exact />
           <Route path="/editar-info-productos" component={EditarInfoProductos} exact />
+          <Route path="/control-stock" component={ControlStock} exact />
 
           <Redirect to="/login" />
         </IonRouterOutlet>
