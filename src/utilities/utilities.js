@@ -27,7 +27,7 @@ export function prepararPost(values, set, action = "setJsons", structure = "json
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: formBody
     };
-    console.log(requestOptions);
+    
     return requestOptions;
 
   } else if (structure == "jsonArray") {
