@@ -10,15 +10,15 @@ import { Redirect } from 'react-router-dom'
 import {
   arrowBackOutline
 } from 'ionicons/icons';
-//import './Home.css';
-import { prepararPost } from '../utilities/utilities.js';
-import { url } from '../utilities/utilities.js'
+
+import { url, prepararPost } from '../utilities/utilities.js';
 import { connect } from 'react-redux'
 import { getProductos } from '../actions/productosAction'
+import Swal from 'sweetalert2'
 
 const mapStateToProps = store => ({
   productos: store.productos
-})
+});
 
 class EditarInfoProductos extends Component {
   constructor(props) {
@@ -35,21 +35,23 @@ class EditarInfoProductos extends Component {
 
   getProductos = () => {
 
-    this.setState({ loading_productos: true })
+    this.setState({ loading_productos: true });
 
     let Parameters = '?action=getJSON&get=productos';
 
     fetch(this.state.url + Parameters)
       .then((res) => res.json())
       .then((responseJson) => {
-
+        
         //Guardamos la lista de productos que vienen del API en el store de Redux
         this.props.dispatch(getProductos(responseJson))
 
         this.setState({
           loading_productos: false,
           productos: this.props.productos.list
-        })
+        });
+
+        Swal.close();
       })
       .catch((error) => {
         console.log(error)
@@ -82,24 +84,14 @@ class EditarInfoProductos extends Component {
   }
 
   editarInfoProducto = (id) => {
-    document.getElementById(id).readonly = false;
-  }
+    let input = document.getElementById(id);
 
-  opcionSeleccionadaSelect = (e, tipo) => {
-    switch (tipo) {
-      case 'aplica_isv':
-        let aplica_isv = e.target.value;
-        this.setState({ aplica_isv: aplica_isv });
-        break;
-      case 'activo':
-        let activo = e.target.value;
-        this.setState({ activo: activo });
-        break;
-    }
+    input.readonly = false;
+    input.focus();
   }
-
+  
   modificarProducto = () => {
-
+    Swal.showLoading();
     //Modificar propiedades del producto
     let id = document.getElementById("id").value;
     let barra = document.getElementById("barra").value;
@@ -109,6 +101,9 @@ class EditarInfoProductos extends Component {
     let activo = document.getElementById("activo").value;
     let fec_act = "NOW()";
     let usr_act = "admin";
+
+    nombre = nombre.replace("'", "\\'");
+    nombre = nombre.replace(", ", ",");
 
     var values = {
       id: id, nombre: nombre, aplica_isv: aplica_isv, activo: activo,
@@ -120,13 +115,13 @@ class EditarInfoProductos extends Component {
     fetch(this.state.url, requestOptions)
       .then((response) => {
         if (response.status === 200) {
-          alert("Información de producto actualizada correctamente.")
+          console.log("Información de producto actualizada correctamente.")
         }
       })
       .catch((error) => {
         console.log("ERROR: " + error)
       });
-      
+
     //Modificar precio del producto
     var valuesPrdPrecio = {
       producto_barra: barra, precio: precio,
@@ -138,7 +133,13 @@ class EditarInfoProductos extends Component {
     fetch(this.state.url, requestOptionsProductoPrecio)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Precio del producto actualizado correctamente.")
+          Swal.fire({
+            title: '¡Éxito!',
+            text: 'Información del producto actualizada correctamente',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'lightseagreen'
+          });
         }
       })
       .catch((error) => {
@@ -150,7 +151,7 @@ class EditarInfoProductos extends Component {
 
     if (this.state.loading_productos) {
       return <h1>
-        Cargando...
+        { Swal.showLoading() }
       </h1>;
     }
 
@@ -169,6 +170,7 @@ class EditarInfoProductos extends Component {
           </IonToolbar>
         </IonHeader>
         <IonContent>
+          <h4 style={{ textAlign: "center" }}>EDITAR INFO DE PRODUCTO</h4>
           <IonList>
             <IonItem>
               <IonLabel>Seleccione producto:</IonLabel>
@@ -212,15 +214,15 @@ class EditarInfoProductos extends Component {
 
                       <IonItem>
                         <IonLabel>¿Aplica ISV?</IonLabel>
-                        <IonSelect okText="Aceptar" id="aplica_isv" value={this.state.aplica_isv} cancelText="Cancelar" onIonChange={(e) => this.opcionSeleccionadaSelect(e, 'aplica_isv')} placeholder={this.state.aplica_isv == 1 ? 'Sí aplica' : 'No aplica'} interface="action-sheet" key={item.id}>
+                        <IonSelect okText="Aceptar" id="aplica_isv" value={item.aplica_isv} cancelText="Cancelar" placeholder={item.aplica_isv == 1 ? 'Sí aplica' : 'No aplica'} interface="action-sheet" key={item.id}>
                           <IonSelectOption value="1">Sí aplica</IonSelectOption>
                           <IonSelectOption value="0">No aplica</IonSelectOption>
                         </IonSelect>
                       </IonItem>
-
+                      
                       <IonItem>
                         <IonLabel>Activo</IonLabel>
-                        <IonSelect okText="Aceptar" id="activo" value={this.state.activo} cancelText="Cancelar" onIonChange={(e) => this.opcionSeleccionadaSelect(e, 'isv')} placeholder={this.state.activo == 1 ? 'Sí' : 'No'} interface="action-sheet" key={item.id}>
+                        <IonSelect okText="Aceptar" id="activo" value={item.activo} cancelText="Cancelar" placeholder={item.activo == 1 ? 'Sí' : 'No'} interface="action-sheet" key={item.id}>
                           <IonSelectOption value="1">Sí</IonSelectOption>
                           <IonSelectOption value="0">No</IonSelectOption>
                         </IonSelect>
@@ -234,7 +236,7 @@ class EditarInfoProductos extends Component {
             }
           </IonList>
         </IonContent>
-      </IonPage >
+      </IonPage>
     )
   }
 }
