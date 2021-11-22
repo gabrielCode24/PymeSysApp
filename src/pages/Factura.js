@@ -13,6 +13,7 @@ import { Component } from 'react'
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { prepararPost, getTodayDate, url } from '../utilities/utilities.js'
+import Swal from 'sweetalert2'
 //import './Factura.css';
 
 class Factura extends Component {
@@ -98,7 +99,7 @@ class Factura extends Component {
           // Si el elemento no existe, lo metemos en la localStorage
           if (itemExiste.length == 0) {
             a.push(responseJson[0]);
-            
+
             localStorage.setItem('lista_factura', JSON.stringify(a));
 
             var b = localStorage.getItem('lista_factura');
@@ -123,7 +124,13 @@ class Factura extends Component {
             }
 
           } else {
-            alert("¡Este producto ya está en la factura!, si desea modificar la cantidad de este producto utilice el espacio de la columna Uni.")
+            Swal.fire({
+              title: 'Atención',
+              text: 'Este producto ya está en la factura, si desea modificar la cantidad de este producto utilice el espacio de la columna Uni.',
+              icon: 'info',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: 'lightseagreen'
+            });
           }
         }
       })
@@ -192,13 +199,12 @@ class Factura extends Component {
   }
 
   procesarFactura = () => {
-
     var lista_factura = JSON.parse(localStorage.getItem('lista_factura'));
     var flag_cantidad_no_valida = false;
 
     for (var i = 0; i < lista_factura.length; i++) {
-      if (lista_factura[i].cantidad == 0 || lista_factura[i].cantidad < 0 || lista_factura[i].cantidad == undefined 
-         || lista_factura[i].cantidad == "" || lista_factura[i].cantidad == null ) {
+      if (lista_factura[i].cantidad == 0 || lista_factura[i].cantidad < 0 || lista_factura[i].cantidad == undefined
+        || lista_factura[i].cantidad == "" || lista_factura[i].cantidad == null) {
         flag_cantidad_no_valida = true;
       }
     }
@@ -281,16 +287,6 @@ class Factura extends Component {
                         }
 
                         values_arr.push(values);
-
-                        /*
-                        console.log("Factura No. " + fd_max_factura_id);
-                        console.log("Codigo Producto " + (i + 1) + ": " + lista_factura[i].id);
-                        console.log("Producto " + (i + 1) + ": " + lista_factura[i].nombre);
-                        console.log("Cantidad producto " + (i + 1) + ": " + lista_factura[i].cantidad);
-                        console.log("Cantidad precio producto " + (i + 1) + ": " + lista_factura[i].precio);
-          
-                        console.log("--------------------------------");
-                        */
                       }
                       console.log(JSON.stringify(values_arr));
 
@@ -299,12 +295,56 @@ class Factura extends Component {
                       fetch(this.state.url, requestOptionsFacturaDetalle)
                         .then((response) => {
                           if (response.status === 200) {
-                            this.setState({
-                              sending: false
-                            })
-                            alert("Factura realizada exitosamente.")
+
+                            // LÓGICA PARA ACTUALIZAR EL STOCK DE CADA PRODUCTO, EN FUNCION DE LA CANTIDAD
+                            // DE CADA PRODUCTO EN LA FACTURA
+                            for (let z = 0; z < lista_factura.length; z++) {
+                              
+                              let ParametersStockPrd = '?action=getJSON&get=stock_prd&id_prd=' + lista_factura[z].id;
+
+                              fetch(this.state.url + ParametersStockPrd)
+                                .then((res) => res.json())
+                                .then((responseJson) => {
+
+                                  var valuesActualizaStock = {
+                                    producto_id: lista_factura[z].id,
+                                    stock: responseJson[0].stock - lista_factura[z].cantidad
+                                  }
+
+                                  const requestOptionsActualizaStock = prepararPost(valuesActualizaStock, "update_stock", "updateJsons", "jsonSingle");
+                                  
+                                  fetch(this.state.url, requestOptionsActualizaStock)
+                                    .then((response) => {
+                                      if (response.status === 200) {
+                                        Swal.close();
+
+                                        this.setState({
+                                          sending: false
+                                        });
+
+                                        Swal.fire({
+                                          title: '¡Éxito!',
+                                          text: 'Factura realizada correctamente.',
+                                          icon: 'success',
+                                          confirmButtonText: 'Aceptar',
+                                          confirmButtonColor: 'lightseagreen'
+                                        });
+                                      }
+                                    })
+                                    .catch((error) => {
+                                      console.log("ERROR: " + error)
+                                    });
+
+                                })
+                            }
                           } else {
-                            alert("Ocurrió un error al realizar la factura")
+                            Swal.fire({
+                              title: 'Error',
+                              text: 'Ocurrió un error al generar la factura, la transacción no se completó',
+                              icon: 'error',
+                              confirmButtonText: 'Aceptar',
+                              confirmButtonColor: 'red'
+                            });
                           }
                         })
                     }, 1000);
@@ -319,7 +359,13 @@ class Factura extends Component {
           }
         })
     } else {
-      alert("Hay cantidades incorrectas, por favor verifique el listado de productos.");
+      Swal.fire({
+        title: 'Atención',
+        text: 'Hay cantidades incorrectas, por favor verifique el listado de productos.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'lightseagreen'
+      });
     }
 
   }
@@ -330,7 +376,7 @@ class Factura extends Component {
 
     if (this.state.sending) {
       return <div>
-        <p><i>Procesando factura, por favor espere...</i></p>
+        { Swal.showLoading()}
       </div>
     }
 
