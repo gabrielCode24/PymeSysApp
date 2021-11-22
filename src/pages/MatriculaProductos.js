@@ -12,6 +12,7 @@ import {
 } from 'ionicons/icons';
 //import './Home.css';
 import { url, prepararPost } from '../utilities/utilities.js'
+import Swal from 'sweetalert2'
 
 class MatriculaProductos extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class MatriculaProductos extends Component {
   }
 
   registrarProducto = () => {
+    Swal.showLoading();
 
     var barra = document.getElementById('barra').value;
     var nombre = document.getElementById('nombre').value;
@@ -53,6 +55,7 @@ class MatriculaProductos extends Component {
         fec_ing: fec_ing, usr_ing: usr_ing
       }
 
+      // REGISTRO DE INFORMACION PRINCIPAL
       const requestOptions = prepararPost(values, "productos", "setJsons", "jsonSingle");
 
       fetch(this.state.url, requestOptions)
@@ -66,12 +69,13 @@ class MatriculaProductos extends Component {
               fetch(this.state.url + ParametersMaxIdFacturaDetalle)
                 .then((res) => res.json())
                 .then((responseJson) => {
-                  
+
                   if (responseJson.length > 0) {
                     this.setState({
                       max_id_producto: responseJson[0].producto_id,
                     });
 
+                    // REGISTRO DE INFORMACION DE PRECIO DEL PRODUCTO
                     setTimeout(() => {
                       var max_id_producto = this.state.max_id_producto;
 
@@ -85,14 +89,41 @@ class MatriculaProductos extends Component {
                       fetch(this.state.url, requestOptionsProductoPrecio)
                         .then((response) => {
                           if (response.status === 200) {
-                            this.setState({
-                              sending: false
-                            })
-                            alert("Producto registrado exitosamente.");
                             document.getElementById('barra').value = "";
                             document.getElementById('nombre').value = "";
                             document.getElementById('precio').value = "";
                             this.setState({ aplica_isv: 1 })
+                            
+                            // REGISTRO DE INVENTARIO INICIAL
+                            setTimeout(() => {
+                              
+                              var ubicacion = "UBI_PRE"
+                              var valuesInv = {
+                                producto_id: max_id_producto, ubicacion: ubicacion, 
+                                stock: 0, costo_unitario: 0, valor: 0
+                              }
+                              const requestOptionsInventario = prepararPost(valuesInv, "inventario", "setJsons", "jsonSingle");
+                              
+                              fetch(this.state.url, requestOptionsInventario)
+                                .then((response) => {
+                                  if (response.status === 200) {
+                                    Swal.close();
+                                    
+                                    this.setState({
+                                      sending: false
+                                    });
+                                    
+                                    Swal.fire({
+                                      title: '¡Éxito!',
+                                      text: 'El producto se ha registrado correctamente',
+                                      icon: 'success',
+                                      confirmButtonText: 'Aceptar',
+                                      confirmButtonColor: '#3f888f'
+                                    });
+                                  }
+                                })
+                            }, 500)
+
                           } else {
                             alert("Ocurrió un error al registrar el producto.")
                           }
@@ -107,7 +138,13 @@ class MatriculaProductos extends Component {
           }
         })
     } else {
-      alert("Datos incorrectos/incompletos, favor verifique los datos del producto");
+      Swal.fire({
+        title: 'Atención',
+        text: 'Datos incorrectos o incompletos, favor verifique los datos del producto',
+        icon: 'info',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'lightseagreen'
+      });
     }
 
   }
@@ -127,7 +164,7 @@ class MatriculaProductos extends Component {
         }
       })
   }
-  
+
   render() {
 
     return (
@@ -141,6 +178,7 @@ class MatriculaProductos extends Component {
         </IonHeader>
 
         <IonContent>
+          <h4 style={{ textAlign: "center" }}>MATRICULAR PRODUCTOS</h4>
           <IonList>
             <IonItem>
               <IonLabel>Barra:</IonLabel>

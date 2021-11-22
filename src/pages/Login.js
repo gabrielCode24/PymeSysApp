@@ -6,6 +6,7 @@ import {
     from '@ionic/react';
 import { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import Swal from 'sweetalert2'
 //import { MD5 } from '../utilities/crypto'
 // import './Home.css';
 
@@ -46,16 +47,20 @@ class Login extends Component {
                             autenticado: true
                         });
                     } else {
-                        alert("¡Usuario y/o contraseña incorrectos!")
+                        Swal.fire({
+                            title: 'Error',
+                            text: '¡Usuario y/o contraseña incorrectos!',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: 'red'
+                          });
                     }
 
                     //Guardamos el producto solicitado por barcode vía API en el store de Redux
                     //this.props.dispatch(getProductoByBarcode(responseJson[0]))
                 })
                 .catch((error) => {
-                    alert("Mensaje: " + error.message)
                     alert(error)
-                    alert(this.state.url + Parameters);
                 });
         }
     }
