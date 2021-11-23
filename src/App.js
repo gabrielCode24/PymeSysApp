@@ -27,6 +27,8 @@ import Inventario from './pages/Inventario';
 import MatriculaProductos from './pages/MatriculaProductos'
 import EditarInfoProductos from './pages/EditarInfoProductos'
 import ControlStock from './pages/ControlStock';
+import Usuarios from './pages/Usuarios';
+import UsuariosLista from './pages/UsuariosLista';
 
 function App(props) {
 
@@ -41,7 +43,9 @@ function App(props) {
           <Route path="/matricula-productos" component={MatriculaProductos} exact />
           <Route path="/editar-info-productos" component={EditarInfoProductos} exact />
           <Route path="/control-stock" component={ControlStock} exact />
-
+          <Route path="/usuarios" component={Usuarios} exact />
+          <Route path="/usuarios-lista" component={UsuariosLista} exact />
+          
           <Redirect to="/login" />
         </IonRouterOutlet>
       </IonReactRouter>

@@ -40,7 +40,7 @@ class Factura extends Component {
       localStorage.removeItem('lista_factura');
     }
   }
-
+  
   escanear = async () => {
     const data = await BarcodeScanner.scan();
 

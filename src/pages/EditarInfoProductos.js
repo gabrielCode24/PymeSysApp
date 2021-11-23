@@ -2,8 +2,7 @@ import {
   IonContent, IonPage,
   IonHeader, IonToolbar, IonButtons,
   IonBackButton, IonList, IonItem, IonLabel,
-  IonSelect, IonSelectOption, IonInput, IonButton,
-  IonGrid, IonRow, IonCol, IonImg
+  IonSelect, IonSelectOption, IonInput, IonButton
 } from '@ionic/react';
 import { Component } from 'react'
 import { Redirect } from 'react-router-dom'
@@ -89,7 +88,7 @@ class EditarInfoProductos extends Component {
     input.readonly = false;
     input.focus();
   }
-  
+
   modificarProducto = () => {
     Swal.showLoading();
     //Modificar propiedades del producto
@@ -101,7 +100,7 @@ class EditarInfoProductos extends Component {
     let activo = document.getElementById("activo").value;
     let fec_act = "NOW()";
     let usr_act = "admin";
-
+    
     nombre = nombre.replace("'", "\\'");
     nombre = nombre.replace(", ", ",");
 
@@ -146,7 +145,7 @@ class EditarInfoProductos extends Component {
         console.log("ERROR: " + error)
       });
   }
-
+  
   render() {
 
     if (this.state.loading_productos) {

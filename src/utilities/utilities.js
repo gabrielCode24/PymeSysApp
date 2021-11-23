@@ -27,7 +27,7 @@ export function prepararPost(values, set, action = "setJsons", structure = "json
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: formBody
     };
-    
+    console.log(requestOptions);
     return requestOptions;
 
   } else if (structure == "jsonArray") {
@@ -87,3 +87,5 @@ export function getTodayDate(params) {
 export function url(){
   return 'https://pymesys.000webhostapp.com/api/pymesys.php';
 }
+
+export var saltingCode = "3Zh8m^dM0kYzwobQjif&XHKmdl6z#J";

@@ -118,7 +118,7 @@ class MatriculaProductos extends Component {
                                       text: 'El producto se ha registrado correctamente',
                                       icon: 'success',
                                       confirmButtonText: 'Aceptar',
-                                      confirmButtonColor: '#3f888f'
+                                      confirmButtonColor: 'lightseagreen'
                                     });
                                   }
                                 })
