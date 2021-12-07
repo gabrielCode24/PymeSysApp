@@ -83,8 +83,8 @@ class UsuariosLista extends Component {
 
   modificarUsuario = () => {
     Swal.showLoading();
-    
     //Modificar información de un usuario
+
     var id = document.getElementById('id').value;
     var nombre = document.getElementById('nombre').value;
     var usuario = document.getElementById('usuario').value;
@@ -93,11 +93,18 @@ class UsuariosLista extends Component {
     var activo = document.getElementById('activo').value;
 
     clave = (clave.length > 0) ? MD5(clave + saltingCode) : clave_hidden;
+    
+    console.log(id);
+    console.log(nombre);
+    console.log(usuario);
+    console.log(clave);
+    console.log(activo);
 
     var valuesUsuario = {
       id: id, nombre: nombre, clave: clave,
       activo: activo
     }
+
 
     const requestOptionsUsuario = prepararPost(valuesUsuario, "update_usuario", "updateJsons", "jsonSingle");
 

@@ -21,7 +21,7 @@ class Usuarios extends Component {
     super(props);
     this.state = {
       lista_usuarios: false,
-      agregar_usuario: false
+      crear_usuario: false
     }
   }
 
@@ -30,8 +30,8 @@ class Usuarios extends Component {
       case 'lista_usuarios':
         this.setState({ lista_usuarios: true });
         break;
-      case 'nuevo_usuario':
-        this.setState({ agregar_usuario: true });
+      case 'crear_usuario':
+        this.setState({ crear_usuario: true });
         break;
     }
   }
@@ -42,8 +42,8 @@ class Usuarios extends Component {
       return (<Redirect to={'/usuarios-lista'} />)
     }
 
-    if (this.state.agregar_usuario) {
-      return (<Redirect to={'/nuevo-usuario'} />)
+    if (this.state.crear_usuario) {
+      return (<Redirect to={'/usuario-crear'} />)
     }
 
     return (
@@ -61,12 +61,12 @@ class Usuarios extends Component {
           <div>
             <IonGrid>
               <IonRow>
-                <IonCol size="6" onClick={() => this.redirigir('lista_usuarios')} style={{
+                <IonCol size="6" onClick={() => this.redirigir('crear_usuario')} style={{
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid", backgroundSize: "cover"
                 }}><IonImg src={lista_usuarios} style={{ height: "100%" }}></IonImg></IonCol>
 
-                <IonCol size="6" onClick={() => this.redirigir('nuevo_usuario')} style={{
+                <IonCol size="6" onClick={() => this.redirigir('crear_usuario')} style={{
                   height: "140px", borderColor: "#C0C0C0",
                   borderWidth: "1px", borderStyle: "solid"
                 }}><IonImg src={agregar_usuario} style={{ height: "100%" }}></IonImg></IonCol>

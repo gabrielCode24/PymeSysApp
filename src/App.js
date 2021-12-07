@@ -29,6 +29,7 @@ import EditarInfoProductos from './pages/EditarInfoProductos'
 import ControlStock from './pages/ControlStock';
 import Usuarios from './pages/Usuarios';
 import UsuariosLista from './pages/UsuariosLista';
+import UsuarioCrear from './pages/UsuarioCrear';
 
 function App(props) {
 
@@ -45,6 +46,7 @@ function App(props) {
           <Route path="/control-stock" component={ControlStock} exact />
           <Route path="/usuarios" component={Usuarios} exact />
           <Route path="/usuarios-lista" component={UsuariosLista} exact />
+          <Route path="/usuario-crear" component={UsuarioCrear} exact />
           
           <Redirect to="/login" />
         </IonRouterOutlet>
